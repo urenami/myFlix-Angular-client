@@ -1,0 +1,16 @@
+/* app.component.scss */
+
+/* Center the content vertically and horizontally */
+.main-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh; /* This sets the container to 100% of the viewport height */
+  }
+  
+  /* Center the buttons horizontally */
+  .main-page button {
+    margin: 5px;
+  }
+  
