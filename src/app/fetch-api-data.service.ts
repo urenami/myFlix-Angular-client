@@ -173,26 +173,33 @@ export class FetchApiDataService {
 
   // Making the api call for the elete a movie from the favorite movies endpoint
   deleteFavoriteMovie(movieId: string): Observable<any> {
+    console.log('Deleting movie with ID:', movieId);
     const user = JSON.parse(localStorage.getItem('user') || '{}');
     const token = localStorage.getItem('token');
-
+  
+    // Check if the movieId is in the user's favoriteMovies array
     const index = user.FavoriteMovies.indexOf(movieId);
-    console.log(index);
-    if (index > -1) { // only splice array when item is found
-      user.FavoriteMovies.splice(index, 1); // 2nd parameter means remove one item only
+  
+    if (index > -1) {
+      // If the movieId is found, remove it from the array
+      user.FavoriteMovies.splice(index, 1);
+  
+      // Update the user data in local storage
+      localStorage.setItem('user', JSON.stringify(user));
     }
-    localStorage.setItem('user', JSON.stringify(user));
+  
+    // Send an HTTP DELETE request to the API to remove the movie from favorites
     return this.http.delete(apiUrl + 'users/' + user.Username + '/movies/' + movieId, {
-      headers: new HttpHeaders(
-        {
-          Authorization: 'Bearer ' + token,
-        }),
-      responseType: "text"
+      headers: new HttpHeaders({
+        Authorization: 'Bearer ' + token,
+      }),
+      responseType: 'text'
     }).pipe(
       map(this.extractResponseData),
       catchError(this.handleError)
     );
   }
+  
 
   // Non-typed response extraction
   private extractResponseData(res: any): any {

@@ -24,7 +24,7 @@ export class MovieCardComponent {
   getMovies(): void {
     this.fetchApiData.getAllMovies().subscribe((resp: any) => {
       this.movies = resp;
-      console.log(this.movies);
+      console.log('Movies:', this.movies); // Added console.log statement
       return this.movies;
     });
   }
@@ -61,10 +61,10 @@ export class MovieCardComponent {
 
   addFavorite(id: string): void {
     this.fetchApiData.addFavoriteMovie(id).subscribe((result) => {
-
       this.snackBar.open('Movie added to favorites.', 'OK', {
         duration: 2000
       });
+      console.log('Movie added to favorites:', result); // Added console.log statement
     });
   }
 
@@ -77,6 +77,7 @@ export class MovieCardComponent {
       this.snackBar.open('Movie removed from favorites.', 'OK', {
         duration: 2000
       });
+      console.log('Movie removed from favorites:', result); // Added console.log statement
     });
   }
 }
