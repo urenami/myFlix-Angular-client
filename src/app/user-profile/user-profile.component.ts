@@ -1,9 +1,9 @@
 import { Component, OnInit, Input } from '@angular/core';
 
-// // You'll use this import to close the dialog on success
+// This import is used to close the dialog on success
 import { MatDialogRef } from '@angular/material/dialog';
 
-// // This import is used to display notifications back to the user
+// This import is used to display notifications back to the user
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 // This import brings in the API calls we created in 6.2
@@ -12,13 +12,14 @@ import { Router } from '@angular/router';
 
 import { formatDate } from '@angular/common';
 
-
+/**
+ * Represents the UserProfileComponent, responsible for user profile management.
+ */
 @Component({
   selector: 'app-user-profile',
   templateUrl: './user-profile.component.html',
   styleUrls: ['./user-profile.component.scss']
 })
-
 export class UserProfileComponent implements OnInit {
 
   user: any = {};
@@ -26,22 +27,36 @@ export class UserProfileComponent implements OnInit {
 
   @Input() userData = { Username: '', Password: '', Email: '', Birthday: '' };
 
-  constructor(
-    public fetchApiData: FetchApiDataService,
-    //public dialogRef: MatDialogRef<UserProfileComponent>,
-    public snackBar: MatSnackBar,
-    private router: Router
-  ) { }
+  /**
+ * Creates a new UserProfileComponent instance.
+ *
+ * @param fetchApiData - Service for making user data API calls.
+ * @param snackBar - Service for displaying notifications using Material Snack Bar.
+ * @param router - Angular Router service for navigation.
+ */
+constructor(
+  public fetchApiData: FetchApiDataService,
+  public snackBar: MatSnackBar,
+  private router: Router
+) { }
 
-  ngOnInit(): void {
-    this.getUser();
-  }
+/**
+ * Initializes the component after construction and retrieves user data.
+ */
+ngOnInit(): void {
+  this.getUser();
+}
 
+
+  /**
+   * Fetches user data and favorite movies for the current user.
+   */
   getUser(): void {
     this.user = this.fetchApiData.getOneUser();
     this.userData.Username = this.user.Username;
     this.userData.Email = this.user.Email;
-    // this.user.Birthday comes in as ISOString format, like so: "2011-10-05T14:48:00.000Z"
+
+    // Convert user's birthday to a readable format
     this.userData.Birthday = formatDate(this.user.Birthday, 'yyyy-MM-dd', 'en-US', 'UTC+0');
 
     this.fetchApiData.getAllMovies().subscribe((resp: any) => {
@@ -49,6 +64,9 @@ export class UserProfileComponent implements OnInit {
     });
   }
 
+  /**
+   * Updates user information.
+   */
   editUser(): void {
     this.fetchApiData.editUser(this.userData).subscribe((result) => {
       localStorage.setItem('user', JSON.stringify(result));
@@ -63,6 +81,9 @@ export class UserProfileComponent implements OnInit {
     });
   }
 
+  /**
+   * Deletes the user account and logs the user out.
+   */
   deleteUser(): void {
     this.fetchApiData.deleteUser().subscribe((result) => {
       localStorage.clear();

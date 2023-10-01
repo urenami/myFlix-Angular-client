@@ -10,13 +10,19 @@ import { MatDialog } from '@angular/material/dialog';
 })
 export class WelcomePageComponent implements OnInit {
   constructor(public dialog: MatDialog) { }
+  
   ngOnInit(): void {
+    // This is where we initialize things when the welcome page loads, but it's empty for now.
   }
+  
+  // This function opens a registration pop-up when the user clicks the sign-up button or link.
   openUserRegistrationDialog(): void {
     this.dialog.open(UserRegistrationFormComponent, {
       width: '280px'
     });
   }
+  
+  // Similar to the previous function, this one opens a login pop-up when the user clicks the login button or link.
   openUserLoginDialog(): void {
     this.dialog.open(UserLoginFormComponent, {
       width: '280px'
